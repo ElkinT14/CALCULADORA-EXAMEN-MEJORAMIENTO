@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Nota de Mejoramiento</title>
+    <style>
+        body {
+            background-color: #1c1c1c;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+        h1 {
+            color: #fff;
+        }
+        input[type="number"], input[type="text"], select {
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #444;
+            color: white;
+        }
+        button {
+            padding: 15px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #76ff03;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Calculadora de Nota de Mejoramiento</h1>
+
+        <label for="examen_final">Nota Examen Final (50%):</label>
+        <input type="number" id="examen_final" min="0" max="100" placeholder="Ingrese la nota del examen final" required>
+
+        <label for="lg">Nota Lección General (20%):</label>
+        <input type="number" id="lg" min="0" max="100" placeholder="Ingrese la nota de la lección general" required>
+
+        <label for="pruebas">Nota Pruebas de Salida (10%):</label>
+        <input type="number" id="pruebas" min="0" max="100" placeholder="Ingrese la nota de las pruebas de salida" required>
+
+        <label for="tareas">Nota Tareas (5%):</label>
+        <input type="number" id="tareas" min="0" max="100" placeholder="Ingrese la nota de las tareas" required>
+
+        <label for="controles">Nota Controles de Lectura (5%):</label>
+        <input type="number" id="controles" min="0" max="100" placeholder="Ingrese la nota de los controles de lectura" required>
+
+        <label for="talleres">Nota Talleres (5%):</label>
+        <input type="number" id="talleres" min="0" max="100" placeholder="Ingrese la nota de los talleres" required>
+
+        <label for="mejoramiento">Examen de Mejoramiento (75% o 70%):</label>
+        <select id="mejoramiento">
+            <option value="75">75%</option>
+            <option value="70">70%</option>
+        </select>
+
+        <button onclick="calcularMejoramiento()">Calcular Necesario para Aprobar</button>
+
+        <div class="result" id="resultado"></div>
+    </div>
+
+    <script>
+        function calcularMejoramiento() {
+            // Obtener los valores de las entradas
+            let examen_final = parseFloat(document.getElementById('examen_final').value);
+            let lg = parseFloat(document.getElementById('lg').value);
+            let pruebas = parseFloat(document.getElementById('pruebas').value);
+            let tareas = parseFloat(document.getElementById('tareas').value);
+            let controles = parseFloat(document.getElementById('controles').value);
+            let talleres = parseFloat(document.getElementById('talleres').value);
+            let mejoramiento = parseFloat(document.getElementById('mejoramiento').value);
+
+            // Calcular el total actual sin el examen de mejoramiento
+            let total_actual = (examen_final * 0.50) + (lg * 0.20) + (pruebas * 0.10) + (tareas * 0.05) + (controles * 0.05) + (talleres * 0.05);
+
+            // Si el total actual es suficiente para aprobar
+            if (total_actual >= 60) {
+                document.getElementById('resultado').innerHTML = "¡Ya has aprobado! No necesitas el examen de mejoramiento.";
+                return;
+            }
+
+            // Calcular la nota mínima necesaria en el examen de mejoramiento
+            let total_requerido = 60; // Nota mínima para aprobar
+            let restante = total_requerido - total_actual;
+            let porcentaje_restante = mejoramiento / 100;
+
+            // Calcular cuánto se necesita sacar en el examen de mejoramiento
+            let nota_necesaria = restante / porcentaje_restante;
+
+            // Mostrar el resultado
+            document.getElementById('resultado').innerHTML = `Necesitas obtener una nota de ${nota_necesaria.toFixed(2)} en el examen de mejoramiento para aprobar.`;
+        }
+    </script>
+
+</body>
+</html>
